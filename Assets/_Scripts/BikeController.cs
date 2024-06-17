@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BikeController : MonoBehaviour
 {
-    private float moveInput;
+    //private float moveInput;
     private float steerInput;
+
+    private string[] dataArray;
 
     [SerializeField] private float maxSpeed;
     [SerializeField] private float acceleration;
@@ -23,24 +23,33 @@ public class BikeController : MonoBehaviour
     [SerializeField] LayerMask surfaceMask;
     RaycastHit hit;
 
+    public float MaxSpeed { get => maxSpeed; set => maxSpeed = value; }
+    public float SteerSpeed { get => steerSpeed; set => steerSpeed = value; }
+
     private void Awake()
     {
         this.rayLength = sphereRb.GetComponent<SphereCollider>().radius + 0.2f;
 
         this.sphereRb.transform.parent = null;
         this.bikeBodyRb.transform.parent = null;
+
+        ComController.WhenReceiveDataCall += ReceiveData;
     }
 
     private void Update()
     {
-        this.moveInput = Input.GetAxis("Vertical");
-        this.steerInput = Input.GetAxis("Horizontal");
+        this.steerInput = Input.GetAxisRaw("Horizontal");
+
+        /*this.steerSpeed = GameController.instance.SteerSpeedBike;
+        this.maxSpeed = GameController.instance.MaxSpeedBike;*/
+        /*print("Steer val: " + steerSpeed);
+        print("Speed val: " + maxSpeed);*/
 
         transform.position = this.sphereRb.transform.position;
         //this.bikeBodyRb.MoveRotation(transform.rotation);
 
         this.velocity = this.bikeBodyRb.transform.InverseTransformDirection(this.bikeBodyRb.velocity);
-        this.curVelocityOffset = velocity.z / this.maxSpeed;
+        this.curVelocityOffset = velocity.z / this.MaxSpeed;
     }
 
     private void FixedUpdate()
@@ -48,12 +57,19 @@ public class BikeController : MonoBehaviour
         Movement();
     }
 
+    void ReceiveData(string incomingString)
+    {
+        this.dataArray = incomingString.Split(',');
+        float.TryParse(dataArray[0], out this.steerSpeed);
+        float.TryParse(dataArray[1], out this.maxSpeed);
+    }
+
     void Movement()
     {
         if (this.Grounded())
         {
-            this.Acceleration();
-            this.Rotation();
+            //this.Acceleration();
+            //this.Rotation();
         }
         else Gravity();
         this.Tilt();
@@ -61,13 +77,17 @@ public class BikeController : MonoBehaviour
 
     void Acceleration()
     {
-        sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, transform.forward * this.maxSpeed * this.moveInput, Time.fixedDeltaTime * this.acceleration);
+        sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, transform.forward * this.MaxSpeed, Time.fixedDeltaTime * this.acceleration);
     }
 
     void Rotation()
     {
-        transform.Rotate(0, this.steerInput * this.moveInput * this.curVelocityOffset * this.steerSpeed * Time.fixedDeltaTime, 0, Space.World);
-    
+        //transform.Rotate(0, this.steerInput * this.curVelocityOffset * this.steerSpeed * Time.fixedDeltaTime, 0, Space.World);
+        if (this.steerSpeed > 0)
+            sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, Vector3.right * this.SteerSpeed, Time.fixedDeltaTime * this.acceleration);
+        else if (this.steerSpeed < 0)
+            sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, Vector3.left * this.SteerSpeed, Time.fixedDeltaTime * this.acceleration);
+
         // Rotate Handle
     }
 
@@ -78,15 +98,17 @@ public class BikeController : MonoBehaviour
 
     void Gravity()
     {
-        this.sphereRb.AddForce(this.gravity * Vector3.down, ForceMode.Acceleration);
+        //this.sphereRb.AddForce(this.gravity * Vector3.down, ForceMode.Acceleration);
+        this.sphereRb.AddForce(this.gravity * Vector3.zero, ForceMode.Acceleration);
     }
 
     void Tilt()
     {
         float xRot = (Quaternion.FromToRotation(this.bikeBodyRb.transform.up, hit.normal) * this.bikeBodyRb.transform.rotation).eulerAngles.x;
         float zRot = 0;
-        if(this.curVelocityOffset > 0)
-            zRot = -this.zTiltAngle * this.steerInput * this.curVelocityOffset;
+        /*if (this.curVelocityOffset > 0)
+            zRot = -this.zTiltAngle * this.steerSpeed * this.curVelocityOffset;*/
+        zRot = -this.zTiltAngle * this.steerSpeed;
 
         Quaternion targetRot = Quaternion.Slerp(this.bikeBodyRb.transform.rotation, Quaternion.Euler(xRot, transform.eulerAngles.y, zRot), this.tiltIncrement);
         Quaternion newRot = Quaternion.Euler(targetRot.eulerAngles.x, transform.eulerAngles.y, targetRot.eulerAngles.z);
