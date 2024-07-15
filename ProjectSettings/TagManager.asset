@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bike
+  - VehicleSpawner
+  - Tile
+  - Destroy
+  - Vehicle
+  - Racing
   layers:
   - Default
   - TransparentFX
