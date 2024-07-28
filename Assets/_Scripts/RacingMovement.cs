@@ -9,12 +9,11 @@ public class RacingMovement : MonoBehaviour
     [SerializeField] private GameObject lineWarning;
     [SerializeField] private float timeToMaxSpeed;
     private Rigidbody mRb;
-    private Collider mCollider;
+    private bool isBreak;
 
     private void Awake()
     {
         this.mRb = GetComponent<Rigidbody>();
-        this.mCollider = GetComponent<Collider>();
     }
 
     private void Start()
@@ -36,14 +35,17 @@ public class RacingMovement : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Tile")) return;
+        this.isBreak = true;
         this.SetSpeed(0f);
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 3f);
     }
 
     void Move()
     {
-        //this.mRb.AddForce(force * Vector3.forward, ForceMode.Impulse);
+        if (this.isBreak) return;
+        //this.mRb.AddForce(this.speed * Vector3.forward, ForceMode.Impulse);
         this.mRb.MovePosition(transform.position + transform.forward * Time.fixedDeltaTime * this.speed);
+        //this.mRb.velocity = Vector3.Lerp(this.mRb.velocity, transform.forward * this.speed, Time.fixedDeltaTime);
     }
 
     public void SetSpeed(float speed)
@@ -56,6 +58,7 @@ public class RacingMovement : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         this.SetSpeed(this.maxSpeed);
+        //Move();
         StopCoroutine(MaxAccelerationMove(time));
     }
 }

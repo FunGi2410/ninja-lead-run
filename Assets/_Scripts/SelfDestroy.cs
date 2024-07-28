@@ -9,12 +9,12 @@ public class SelfDestroy : MonoBehaviour
     {
         this.parrentCollider = transform.parent.gameObject.GetComponent<Collider>();
     }
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Destroy"))
         {
             this.parrentCollider.enabled = false;
             Destroy(transform.parent.gameObject, 3f);
         }
-    }
+    }*/
 }

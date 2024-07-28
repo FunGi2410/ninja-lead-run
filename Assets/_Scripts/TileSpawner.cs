@@ -20,10 +20,10 @@ public class TileSpawner : MonoBehaviour
     {
         int index = Random.Range(0, this.tilePrefabs.Length);
         GameObject tile = Instantiate(this.tilePrefabs[index], this.nextSpawnPoint, Quaternion.identity);
-
         // Vehicle Spawn
         this.vehicleSpawner.Spawn(this.nextSpawnPoint);
-
         this.nextSpawnPoint = tile.transform.GetChild(0).transform.position;
+
+        
     }
 }

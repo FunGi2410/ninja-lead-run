@@ -6,10 +6,9 @@ using UnityEngine;
 public class VehicleActivator : MonoBehaviour
 {
     public event Action OnPlayerDetected;
-
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (other.gameObject.CompareTag("Bike"))
+        if(Bike.Instance.transform.position.z >= transform.position.z)
         {
             OnPlayerDetected?.Invoke();
         }

@@ -10,6 +10,7 @@ TagManager:
   - Destroy
   - Vehicle
   - Racing
+  - MagnetDetect
   layers:
   - Default
   - TransparentFX

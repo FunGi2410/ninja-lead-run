@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4657560251646240277}
   - component: {fileID: 1431441367570530116}
   - component: {fileID: 2445546695945544486}
+  - component: {fileID: -4709994881776763296}
   m_Layer: 0
   m_Name: Bus 1
   m_TagString: Vehicle
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1927675620267982836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5.7015705}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6843531695986879739}
@@ -67,8 +68,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
 --- !u!114 &2445546695945544486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,9 +82,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ad773c2c9751745895b098cfebdd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   targetPoints: []
   distance: 50
+--- !u!114 &-4709994881776763296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927675620267982836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a51c0e36821f3d4385a0e2e5caac7f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 12
+  explosionEffect: {fileID: 7907298227055638610, guid: 5c8b646a5aabf0c40b5ec6e741b7ed8d,
+    type: 3}
+  directionForce: {x: 0, y: 1, z: -0.2}
 --- !u!1 &1927675620267982838
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,5 +572,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.85009, y: 2.209863, z: 0.96759367}
-  m_Center: {x: 0.029059649, y: 1.5745333, z: 1.7126284}
+  m_Size: {x: 2.85009, y: 2.209863, z: 10.056497}
+  m_Center: {x: 0.029059649, y: 1.5745333, z: -2.8318248}

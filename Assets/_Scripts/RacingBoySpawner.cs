@@ -5,6 +5,8 @@ using UnityEngine;
 public class RacingBoySpawner : MonoBehaviour
 {
     [SerializeField] GameObject racingBoyPref;
+    [SerializeField] private float timeToSpawn = 4f;
+    float firtRacingXAxisPos;
 
     private Vector3 randomPosSpawn;
 
@@ -33,14 +35,21 @@ public class RacingBoySpawner : MonoBehaviour
     void Spawn()
     {
         this.randomPosSpawn = new Vector3(Random.Range(-this.sizeTile.x / 2, this.sizeTile.x / 2), 0.05f, transform.position.z);
-        GameObject racingBoy = Instantiate(this.racingBoyPref, this.randomPosSpawn, Quaternion.identity);
-        //racingBoy.transform.position = this.randomPosSpawn;
+        if(Mathf.Abs(this.randomPosSpawn.x - this.firtRacingXAxisPos) < 2)
+        {
+            this.Spawn();
+        }
+        else
+        {
+            GameObject racingBoy = Instantiate(this.racingBoyPref, this.randomPosSpawn, Quaternion.identity);
+            this.firtRacingXAxisPos = racingBoy.transform.position.x;
+        }
     }
 
     IEnumerator SpawnWithTime()
     {
         Spawn();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(this.timeToSpawn);
         StartCoroutine(SpawnWithTime());
     }
 }
