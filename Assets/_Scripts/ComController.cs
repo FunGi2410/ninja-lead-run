@@ -8,7 +8,7 @@ using System;
 public class ComController : MonoBehaviour
 {
     private bool abort;
-    private SerialPort serialPort;
+    private static SerialPort serialPort;
     private Thread serialThread;
     private SynchronizationContext mainThread;
 
@@ -77,6 +77,11 @@ public class ComController : MonoBehaviour
             }
         }
         if(!isOK) msg.text = "Port is not ready";
+    }
+
+    public static void Send(string data)
+    {
+        serialPort.Write(data);
     }
 
     void Receive()

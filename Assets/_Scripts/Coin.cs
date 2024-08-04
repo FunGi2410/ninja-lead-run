@@ -14,7 +14,7 @@ public class Coin : MonoBehaviour
     {
         if (other.gameObject.CompareTag("MagnetDetect"))
         {
-            Debug.Log("Detect coin");
+            //Debug.Log("Detect coin");
             this.coinMove.enabled = true;
         }
     }

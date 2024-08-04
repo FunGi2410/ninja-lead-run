@@ -1,4 +1,6 @@
+using UnityEngine;
+
 public interface IPowerUp
 {
-    public void Collect();
+    public void Collect(Transform parrent);
 }

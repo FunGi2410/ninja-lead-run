@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class MagnetPwUp : MonoBehaviour, IPowerUp
 {
-    public void Collect()
+    [SerializeField] private GameObject magnetDetectCollider;
+    [SerializeField] private float timeLife;
+    public void Collect(Transform parrent)
     {
-        // event --> call coin move
-        // cal distance from player
-        // move to player 
+        // create a magnet detect and child to player
+        GameObject magnetColInstance = Instantiate(this.magnetDetectCollider, parrent);
+        // set time alive
+        Destroy(magnetColInstance, timeLife);
     }
 }
