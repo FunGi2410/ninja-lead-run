@@ -17,7 +17,7 @@ public class BikeMovement : MonoBehaviour
     private float tiltIncrement = 0.09f;
     private float zTiltAngle = 45f;
 
-    [SerializeField] private bool isBreak;
+    public static bool canMove = true;
 
     [SerializeField] private Rigidbody sphereRb, bikeBodyRb;
     //[SerializeField] private Rigidbody mRb;
@@ -64,6 +64,7 @@ public class BikeMovement : MonoBehaviour
 
     void Movement()
     {
+        if (!canMove) return;
         if (this.Grounded())
         {
             this.Acceleration();
@@ -84,7 +85,6 @@ public class BikeMovement : MonoBehaviour
     {
         //transform.Rotate(0, this.steerSpeed * 45 * Time.fixedDeltaTime, 0, Space.World);
 
-        if (isBreak) return;
         sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, Vector3.right * this.SteerSpeed * this.horizontalSpeed, Time.fixedDeltaTime * this.acceleration);
         //mRb.velocity = Vector3.Lerp(mRb.velocity, Vector3.right * this.SteerSpeed * this.horizontalSpeed, Time.fixedDeltaTime * this.acceleration);
 

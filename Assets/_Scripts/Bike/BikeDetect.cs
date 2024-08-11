@@ -4,7 +4,9 @@ public class BikeDetect : MonoBehaviour
 {
     private Rigidbody bikeBodyRb;
     private Vector3 dirForce = new Vector3(0f, 1f, -0.5f);
-    bool isBreak;
+    private bool isBreak;
+    [SerializeField] private float forceToBreak = 17f;
+
     private void Awake()
     {
         this.bikeBodyRb = GetComponent<Rigidbody>();
@@ -24,7 +26,6 @@ public class BikeDetect : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Tile"))
         {
-            print("Detect");
             Rigidbody otherRb = collision.rigidbody;
 
             // calculate relative velocity between 2 objects
@@ -33,18 +34,24 @@ public class BikeDetect : MonoBehaviour
             // calculate mass
             float combinedMass = bikeBodyRb.mass * otherRb.mass / (bikeBodyRb.mass + otherRb.mass);
 
-            // Tính toán lực va chạm (lực tác dụng)
+            // calculate impactForce 
             Vector3 impactForce = relativeVelocity * combinedMass;
 
             Debug.Log("Impact Force: " + impactForce.magnitude + " N");
 
-            if(impactForce.magnitude > 17)
+            // magnitude of force more than forceToBreak when bike break
+            if(impactForce.magnitude > forceToBreak)
             {
                 if (isBreak) return;
                 isBreak = true;
                 this.bikeBodyRb.freezeRotation = false;
                 // apply force
                 this.bikeBodyRb.AddForce(impactForce.magnitude * this.dirForce, ForceMode.Impulse);
+
+                // cant control bike
+                BikeMovement.canMove = false;
+                // display game over panel
+                GameController.instance.GameOver();
             }
         }
     }

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.IO.Ports;
 using TMPro;
-using System.Collections;
 using System.Threading;
 using System;
 
@@ -115,17 +114,17 @@ public class ComController : MonoBehaviour
         }
     }
 
-    IEnumerator ReadDataFromSerialPort()
+    /*IEnumerator ReadDataFromSerialPort()
     {
         yield return new WaitForSeconds(.1f);
         //Debug.Log("Start Cour");
         string[] val = serialPort.ReadLine().Split(',');
 
-        /*float steerVal = float.Parse(val[0], CultureInfo.InvariantCulture.NumberFormat);
+        *//*float steerVal = float.Parse(val[0], CultureInfo.InvariantCulture.NumberFormat);
         float speed = float.Parse(val[1], CultureInfo.InvariantCulture.NumberFormat);
 
         GameController.instance.SteerSpeedBike = steerVal;
-        GameController.instance.MaxSpeedBike = speed;*/
+        GameController.instance.MaxSpeedBike = speed;*//*
         float steerVal = 0, speed = 0;
         if (val[0] != "")
             steerVal = float.Parse(val[0], System.Globalization.NumberStyles.Float);
@@ -139,7 +138,7 @@ public class ComController : MonoBehaviour
         print("Speed val: " + speed);
 
         StartCoroutine(ReadDataFromSerialPort());
-    }
+    }*/
 
     private void OnApplicationQuit()
     {
